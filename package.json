@@ -1,0 +1,27 @@
+{
+  "name": "redis_example",
+  "version": "1.0.0",
+  "description": "some examples of NodeJS and Redis",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sandeepincode/redis_example.git"
+  },
+  "dependencies": {
+    "body-parser": "*",
+    "ejs": "^2.4.2",
+    "express": "*",
+    "morgan": "*",
+    "nodemon": "^1.14.3",
+    "redis": "*"
+  },
+  "author": "Sandeepincode",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sandeepincode/redis_example/issues"
+  },
+  "homepage": "https://github.com/sandeepincode/redis_example#readme"
+}
