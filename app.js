@@ -24,23 +24,63 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', function(req, res){
   client.lrange('tasks', 0, -1, function(error, reply){
-    if(error) {
-      return res.send('error')
-    }
+    client.hgetall('call', function(error,call){
       return res.render('index', {
         tasks: reply,
+        call: call,
       });
+    })
   });
 });
 
-app.post('task/add', function(req, res){
+app.post('/task/add', function(req, res){
   var task = req.body.task;
+  console.log(task);
   client.rpush('tasks', task, function(error, reply){
     if(error) {
       return res.send({
         msg: error
       });
     }
+    return res.redirect('/');
+  });
+});
+
+app.post('/task/delete', function(req,res){
+  var tasksToDel = req.body.tasks;
+  client.lrange('tasks', 0, -1, function(error, tasks){
+    for(var i = 0; i < tasks.length; i++){
+      if(tasksToDel.indexOf(tasks[i]) > -1){
+        client.lrem('tasks', 0, tasks[i], function(err){
+          if(err){
+            console.log(err);
+          }
+        });
+      }
+    }
+    return res.redirect('/');
+  });
+});
+
+app.post('/call/add', function(req,res){
+  var newCall = {
+    name: req.body.name,
+    company: req.body.company,
+    phone: req.body.phone,
+    time: req.body.time
+  };
+
+  client.hmset('call', [
+    'name', newCall.name,
+    'company', newCall.company,
+    'phone', newCall.phone,
+    'time', newCall.time,
+  ], function(error, reply){
+    if(error){
+      console.log(error);
+    }
+    console.log(reply);
+    return res.redirect('/');
   });
 });
 
